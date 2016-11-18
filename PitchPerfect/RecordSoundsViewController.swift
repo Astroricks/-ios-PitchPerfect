@@ -22,16 +22,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         stopRecordingButton.isEnabled = false
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func recordAudio(_ sender: AnyObject) {
         print("record button pressed!")
-        recordingLabel.text = "Recording in progress"
-        recordButton.isEnabled = false
-        stopRecordingButton.isEnabled = true
+        configureUI(recording: true)
         
         let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let recordingName = "recordingName.wav"
@@ -51,9 +44,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     
     @IBAction func stopRecording(_ sender: AnyObject) {
         print("stop recording button pressed!")
-        recordingLabel.text = "Tap to record"
-        recordButton.isEnabled = true
-        stopRecordingButton.isEnabled = false
+        configureUI(recording: false)
         
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
@@ -67,7 +58,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         print("AV audio recorder finished recording")
         if (flag) {
-            self.performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
+            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
         } else {
             print("Saving of redcording failed")
         }
@@ -79,6 +70,12 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
             let recordedAudioURL = sender as! NSURL
             playSoundsVC.recordedAudioURL = recordedAudioURL
         }
+    }
+    
+    func configureUI(recording: Bool) {
+        recordingLabel.text = recording ? "Recording in progress" : "Tap to Record"
+        stopRecordingButton.isEnabled = recording
+        recordButton.isEnabled = !recording
     }
 }
 
