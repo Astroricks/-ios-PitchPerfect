@@ -143,6 +143,13 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     // MARK: UI Functions
 
     func configureUI(_ playState: PlayingState) {
+        snailButton.imageView?.contentMode = .scaleAspectFit
+        chipmunkButton.imageView?.contentMode = .scaleAspectFit
+        rabbitButton.imageView?.contentMode = .scaleAspectFit
+        vaderButton.imageView?.contentMode = .scaleAspectFit
+        echoButton.imageView?.contentMode = .scaleAspectFit
+        reverbButton.imageView?.contentMode = .scaleAspectFit
+        
         switch(playState) {
         case .playing:
             setPlayButtonsEnabled(false)
